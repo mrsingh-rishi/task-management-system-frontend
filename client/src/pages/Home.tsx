@@ -1,10 +1,13 @@
+// Home.tsx
 import { useState } from "react"
-import TaskListView from "../features/tasks/TaskList"
+import TaskListView from "../features/tasks/components/TaskList"
 import UserProfile from "../features/user/UserProfile"
-import Dashboard from "../features/tasks/DashBoard"
-
+import Dashboard from "../features/tasks/components/DashBoard"
+import Sidebar from "../components/Sidebar"
+import menu from "../assets/menu.png"
 export const Home = () => {
   const [selectedOption, setSelectedOption] = useState<string>("dashboard")
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
 
   const renderComponent = () => {
     switch (selectedOption) {
@@ -21,39 +24,26 @@ export const Home = () => {
 
   return (
     <div className="flex h-[100vh] ">
-      {/* Sidebar */}
-      <div className="w-1/4 bg-gray-800 p-4 text-white">
-        <h2 className="text-2xl font-bold mb-4">Task Management</h2>
-        <ul>
-          <li
-            className={`cursor-pointer mb-2 ${
-              selectedOption === "task" ? "text-green-500" : "text-white"
-            }`}
-            onClick={() => setSelectedOption("task")}
-          >
-            Task
-          </li>
-          <li
-            className={`cursor-pointer mb-2 ${
-              selectedOption === "dashboard" ? "text-green-500" : "text-white"
-            }`}
-            onClick={() => setSelectedOption("dashboard")}
-          >
-            Dashboard
-          </li>
-          <li
-            className={`cursor-pointer mb-2 ${
-              selectedOption === "profile" ? "text-green-500" : "text-white"
-            }`}
-            onClick={() => setSelectedOption("profile")}
-          >
-            Profile
-          </li>
-        </ul>
-      </div>
+      <Sidebar
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
 
-      {/* Main Content */}
-      <div className="w-3/4 p-4">{renderComponent()}</div>
+      <div className={`w-3/4 p-4 ${sidebarOpen ? "ml-64" : "ml-16"}`}>
+        {/* Button to open the sidebar */}
+        {!sidebarOpen && (
+          <button
+            className="text-black focus:outline-none fixed top-4 left-4"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <img src={menu} className="w-8" alt="" />
+          </button>
+        )}
+
+        {renderComponent()}
+      </div>
     </div>
   )
 }

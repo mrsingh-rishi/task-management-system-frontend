@@ -2,7 +2,7 @@ import "./App.css"
 import { Login } from "./features/auth/components/Login"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { Singup } from "./features/auth/components/Signup"
-import TaskListView from "./features/tasks/TaskList"
+import TaskListView from "./features/tasks/components/TaskList"
 import UserProfile from "./features/user/UserProfile"
 import { Home } from "./pages/Home"
 

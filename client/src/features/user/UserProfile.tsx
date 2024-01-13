@@ -1,11 +1,13 @@
 // UserProfile.tsx
 import React from "react"
+import TaskItem from "../../components/TaskItem"
+import { Task } from "vitest"
 
 interface User {
   name: string
   email: string
   tasksDone: number
-  tasksDoneList: string[] // Array of task names
+  tasksDoneList: Task[] // Array of task names
 }
 
 const UserProfile: React.FC = () => {
@@ -15,15 +17,25 @@ const UserProfile: React.FC = () => {
     email: "john.doe@example.com",
     tasksDone: 10,
     tasksDoneList: [
-      "Task 1",
-      "Task 2",
-      "Task 3",
-      // Add more task names as needed...
+      {
+        id: 1,
+        title: "Task 1",
+        description: "Description for Task 1",
+        status: "To Do",
+        priority: "high",
+      },
+      {
+        id: 2,
+        title: "Task 2",
+        description: "Description for Task 2",
+        status: "In Progress",
+        priority: "medium",
+      },
     ],
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">
+    <div className="mx-auto p-6 w-[60%] bg-white rounded-md shadow-md">
       <h2 className="text-2xl font-bold mb-4">User Profile</h2>
       <div>
         <p className="mb-2">
@@ -37,11 +49,10 @@ const UserProfile: React.FC = () => {
         </p>
         <div className="mb-2">
           <strong>Tasks Done:</strong>
-          <ul className="list-disc ml-6">
-            {user.tasksDoneList.map((task, index) => (
-              <li key={index}>{task}</li>
-            ))}
-          </ul>
+
+          {user.tasksDoneList.map((task, index) => (
+            <TaskItem task={task} />
+          ))}
         </div>
       </div>
     </div>
