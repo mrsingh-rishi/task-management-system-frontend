@@ -1,7 +1,6 @@
 // UserProfile.tsx
 import React from "react"
-import TaskItem from "../../components/TaskItem"
-import { Task } from "vitest"
+import TaskItem, { Task } from "../../components/TaskItem"
 
 interface User {
   name: string

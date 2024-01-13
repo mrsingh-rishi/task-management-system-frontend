@@ -1,11 +1,6 @@
 // Dashboard.tsx
 import React from "react"
-
-interface Task {
-  id: number
-  title: string
-  status: string
-}
+import TaskItem, { Task } from "../../../components/TaskItem"
 
 const Dashboard: React.FC = () => {
   // Mock data for demonstration
@@ -17,28 +12,82 @@ const Dashboard: React.FC = () => {
   }
 
   const recentTasks: Task[] = [
-    { id: 1, title: "Task 1", status: "Completed" },
-    { id: 2, title: "Task 2", status: "In Progress" },
-    { id: 3, title: "Task 3", status: "To Do" },
+    {
+      id: 1,
+      title: "Task 1",
+      status: "Completed",
+      description: "This is a description.",
+      priority: "high",
+    },
+    {
+      id: 2,
+      title: "Task 2",
+      status: "In Progress",
+      description: "This is a description.",
+      priority: "high",
+    },
+    {
+      id: 3,
+      title: "Task 3",
+      status: "To Do",
+      description: "This is a description.",
+      priority: "high",
+    },
     // Add more tasks as needed...
   ]
 
   // Mock data for task lists by status
   const tasksToDo: Task[] = [
-    { id: 4, title: "Task 4", status: "To Do" },
-    { id: 5, title: "Task 5", status: "To Do" },
+    {
+      id: 4,
+      title: "Task 4",
+      status: "To Do",
+      description: "This is a description.",
+      priority: "high",
+    },
+    {
+      id: 5,
+      title: "Task 5",
+      status: "To Do",
+      description: "This is a description.",
+      priority: "high",
+    },
     // Add more tasks as needed...
   ]
 
   const tasksInProgress: Task[] = [
-    { id: 6, title: "Task 6", status: "In Progress" },
-    { id: 7, title: "Task 7", status: "In Progress" },
+    {
+      id: 6,
+      title: "Task 6",
+      status: "In Progress",
+      description: "This is a description.",
+      priority: "high",
+    },
+    {
+      id: 7,
+      title: "Task 7",
+      status: "In Progress",
+      description: "This is a description.",
+      priority: "high",
+    },
     // Add more tasks as needed...
   ]
 
   const tasksCompleted: Task[] = [
-    { id: 8, title: "Task 8", status: "Completed" },
-    { id: 9, title: "Task 9", status: "Completed" },
+    {
+      id: 8,
+      title: "Task 8",
+      status: "Completed",
+      description: "This is a description.",
+      priority: "high",
+    },
+    {
+      id: 9,
+      title: "Task 9",
+      status: "Completed",
+      description: "This is a description.",
+      priority: "high",
+    },
     // Add more tasks as needed...
   ]
 
@@ -52,7 +101,7 @@ const Dashboard: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
 
       {/* Task Statistics */}
-      <div className="bg-blue-200 p-4 rounded-md mb-6">
+      <div className="bg-gray-200 p-4 rounded-md mb-6">
         <h3 className="text-lg font-semibold mb-2">Task Statistics</h3>
         <div className="grid grid-cols-3 gap-4">
           <div>
@@ -81,10 +130,11 @@ const Dashboard: React.FC = () => {
         {/* To Do List */}
         <div className="bg-gray-100 p-4 rounded-md mb-4">
           <h4 className="text-md font-semibold mb-2">To Do</h4>
+
           <ul>
             {tasksToDo.map((task) => (
               <li key={task.id} className="mb-2">
-                <strong>{task.title}</strong>
+                <TaskItem task={task} />
               </li>
             ))}
           </ul>
@@ -96,7 +146,7 @@ const Dashboard: React.FC = () => {
           <ul>
             {tasksInProgress.map((task) => (
               <li key={task.id} className="mb-2">
-                <strong>{task.title}</strong>
+                <TaskItem task={task} />
               </li>
             ))}
           </ul>
@@ -108,7 +158,7 @@ const Dashboard: React.FC = () => {
           <ul>
             {tasksCompleted.map((task) => (
               <li key={task.id} className="mb-2">
-                <strong>{task.title}</strong>
+                <TaskItem task={task} />
               </li>
             ))}
           </ul>
@@ -116,7 +166,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Tasks */}
-      <div className="bg-green-200 p-4 rounded-md mb-6">
+      <div className="bg-gray-200 p-4 rounded-md mb-6">
         <h3 className="text-lg font-semibold mb-2">Recent Tasks</h3>
         <ul>
           {recentTasks.map((task) => (
@@ -128,7 +178,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Task Creation Form */}
-      <div className="bg-purple-200 p-4 rounded-md">
+      <div className="bg-gray-200 p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-2">Create New Task</h3>
         <form onSubmit={handleTaskCreate}>
           <label className="block mb-2">

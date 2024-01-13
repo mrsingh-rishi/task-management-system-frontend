@@ -11,10 +11,9 @@ export interface Task {
 
 interface TaskItemProps {
   task: Task
-  onStatusChange: (newStatus: string) => void
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, onStatusChange }) => (
+const TaskItem: React.FC<TaskItemProps> = ({ task }) => (
   <li className="mb-4 p-4 border rounded-lg shadow-md bg-white">
     <strong className="text-lg font-semibold mb-2">{task.title}</strong>
     <p className="text-gray-600 mb-2">{task.description}</p>

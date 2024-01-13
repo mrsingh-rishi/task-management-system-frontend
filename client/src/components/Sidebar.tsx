@@ -1,6 +1,7 @@
 // Sidebar.tsx
 import React from "react"
-
+import { Link } from "react-router-dom"
+import menu from "../assets/menu_w.png"
 interface SidebarProps {
   selectedOption: string
   setSelectedOption: React.Dispatch<React.SetStateAction<string>>
@@ -26,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           className="text-white focus:outline-none"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
-          {sidebarOpen ? "Close" : "Open"}
+          <img src={menu} className="w-8 test-white" alt="" />
         </button>
       </div>
       <ul>
@@ -36,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           }`}
           onClick={() => setSelectedOption("dashboard")}
         >
-          Dashboard
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li
           className={`cursor-pointer mb-2 ${
@@ -44,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           }`}
           onClick={() => setSelectedOption("task")}
         >
-          Task
+          <Link to="/task">Task</Link>
         </li>
 
         <li
@@ -53,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           }`}
           onClick={() => setSelectedOption("profile")}
         >
-          Profile
+          <Link to="/profile">Profile</Link>
         </li>
       </ul>
     </div>
