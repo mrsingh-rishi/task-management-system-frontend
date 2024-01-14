@@ -1,65 +1,72 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { RootState, AppThunk } from "../../app/store"
-import { fetchCount } from "./authAPI"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { RootState } from "../../app/store"
+import { UserLogin, UserSignup } from "../../interfaces/User"
+import { Login, Signup } from "./authAPI"
 
-export interface CounterState {
-  value: number
+export interface AuthState {
+  token: string
   status: "idle" | "loading" | "failed"
 }
 
-const initialState: CounterState = {
-  value: 0,
+const initialState: AuthState = {
   status: "idle",
+  token: "",
 }
 
-export const incrementAsync = createAsyncThunk(
-  "counter/fetchCount",
-  async (amount: number) => {
-    const response = await fetchCount(amount)
-    return response.data
+export const SignupAsync = createAsyncThunk(
+  "auth/Signup",
+  async (userData: UserSignup) => {
+    const response = await Signup(userData)
+    return response.data?.token
   },
 )
 
-export const counterSlice = createSlice({
-  name: "counter",
+export const LoginAsync = createAsyncThunk(
+  "auth/Login",
+  async (userData: UserLogin) => {
+    const response = await Login(userData)
+    return response.data?.token
+  },
+)
+
+const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
-    },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+    // You can add reset action if needed
+    resetAuthState: (state) => {
+      state.status = "idle"
+      state.token = ""
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(incrementAsync.pending, (state) => {
+      .addCase(SignupAsync.pending, (state) => {
         state.status = "loading"
       })
-      .addCase(incrementAsync.fulfilled, (state, action) => {
+      .addCase(SignupAsync.fulfilled, (state, action) => {
         state.status = "idle"
-        state.value += action.payload
+        state.token = action.payload
       })
-      .addCase(incrementAsync.rejected, (state) => {
+      .addCase(SignupAsync.rejected, (state) => {
+        state.status = "failed"
+      })
+      .addCase(LoginAsync.pending, (state) => {
+        state.status = "loading"
+      })
+      .addCase(LoginAsync.fulfilled, (state, action) => {
+        state.status = "idle"
+        state.token = action.payload
+      })
+      .addCase(LoginAsync.rejected, (state) => {
         state.status = "failed"
       })
   },
 })
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { resetAuthState } = authSlice.actions
 
-export const selectCount = (state: RootState) => state.counter.value
+export const selectAuthStatus = (state: RootState) => state.auth.status
+export const selectAuthToken = (state: RootState) => state.auth.token
 
-export const incrementIfOdd =
-  (amount: number): AppThunk =>
-  (dispatch, getState) => {
-    const currentValue = selectCount(getState())
-    if (currentValue % 2 === 1) {
-      dispatch(incrementByAmount(amount))
-    }
-  }
-
-export default counterSlice.reducer
+export default authSlice.reducer
