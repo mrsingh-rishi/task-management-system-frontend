@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <div
-      className={`w-1/4 bg-gray-800 p-4 text-white ${
+      className={`w-1/4 bg-blue-800 p-4 text-white ${
         sidebarOpen ? "fixed h-full" : "hidden"
       }`}
     >
@@ -30,6 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <img src={menu} className="w-8 test-white" alt="" />
         </button>
       </div>
+      <hr className="border-t-2 border-blue-400" />
+      <br />
       <ul>
         <li
           className={`cursor-pointer mb-2 ${

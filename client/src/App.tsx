@@ -8,6 +8,7 @@ import TaskListView from "./features/tasks/components/TaskList"
 import UserProfile from "./features/user/UserProfile"
 import Sidebar from "./components/Sidebar"
 import menu from "./assets/menu_b.png"
+import { Home } from "./pages/Home"
 
 function App() {
   const [selectedOption, setSelectedOption] = useState<string>("dashboard")
@@ -39,6 +40,7 @@ function App() {
               <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/task/*" element={<TaskListView />} />
               <Route path="/profile/*" element={<UserProfile />} />
+              <Route path="/" element={<Home />} />
             </Routes>
           </div>
         </div>
