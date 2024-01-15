@@ -6,11 +6,16 @@ Welcome to the Task Management System! This application is designed to help you 
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Demo](#demo)
+- [Backend Repository](#backend-repository)
+- [Backend Endpoints](#backend-endpoints)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Authentication](#authentication)
 - [Database](#database)
 - [Styling](#styling)
+
+
 
 ## Features
 
