@@ -1,51 +1,72 @@
 // Dashboard.tsx
-import React, { useEffect } from "react"
-import TaskItem, { Task } from "../../../components/TaskItem"
+import React, { useEffect, useState } from "react"
+import TaskItem, { Task, Task2 } from "../../../components/TaskItem"
 import { useDispatch, useSelector } from "react-redux"
 import { selectAuthToken } from "../../auth/authSlice"
 import {
   FetchUserDataAsync,
+  selectError,
   selectStatus,
   selectUserData,
 } from "../../user/userSlice"
+import { Loader } from "../../../components/Loader/Loader"
+import { Navigate } from "react-router-dom"
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
-import { Loader } from "../../../components/Loader/Loader"
+import { CreateTaskAsync, FetchAllTasksAsync, selectTasks } from "../taksSlice"
 
 type AppDispatch = ThunkDispatch<RootState, void, AnyAction>
 
 const Dashboard: React.FC = () => {
-  // Store token in LocalStorage
+  const [title, setTitle] = useState<string>("")
+  const [desc, setDesc] = useState<string>("")
+  const [priority, setPriority] = useState<"high" | "medium" | "low">("medium")
   const token = useSelector(selectAuthToken)
-  useEffect(() => {
-    if (token) {
-      // console.log({ token, message: "token stored" })
-
-      localStorage.setItem("authToken", token)
-    }
-  }, [])
-  const dispatch: AppDispatch = useDispatch()
+  const storedToken = localStorage.getItem("authToken")
+  const authError = useSelector(selectError)
   const userData = useSelector(selectUserData)
   const status = useSelector(selectStatus)
-  const storedToken = localStorage.getItem("authToken")
-  // console.log(storedToken)
-
-  // Fetching User Data
-  useEffect(() => {
-    if (storedToken) dispatch(FetchUserDataAsync(storedToken))
-  }, [])
-  // Mock data for demonstration
-  const taskStats = {
-    totalTasks: 20,
-    tasksCompleted: 8,
-    tasksInProgress: 5,
-    tasksToDo: 7,
+  const dispatch: AppDispatch = useDispatch()
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
   }
+
+  const handleDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDesc(e.target.value)
+  }
+
+  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const p = e.target.value
+    console.log(p);
+    
+    if (p === "high") {
+      setPriority("high")
+    } else if (p === " medium") {
+      setPriority("medium")
+    } else if (p === " low") {
+      setPriority("low")
+    }
+  }
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("authToken", token)
+    }
+  }, [token])
+
+  // useEffect(() => {
+  //   if (authError) {
+  //     localStorage.removeItem("authToken")
+  //   }
+  // }, [authError])
+
+  // if (authError) {
+  //   return <Navigate to="/login" replace />
+  // }
 
   const recentTasks: Task[] = userData.tasks
 
-  // Mock data for task lists by status
-  const tasksToDo: Task[] = userData.tasks
+  // const tasksToDo: Task[] = userData.tasks
 
   const tasksInProgress: Task[] = userData.tasks
 
@@ -53,9 +74,39 @@ const Dashboard: React.FC = () => {
 
   const handleTaskCreate = (event: React.FormEvent) => {
     event.preventDefault()
-    console.log("Task created!")
-  }
+    let taskData: Task2 = {
+      title: title,
+      description: desc,
+      status: "todo",
+      priority: priority,
+    }
+    if (token) dispatch(CreateTaskAsync({ taskData, token }))
+    else if (storedToken) {
+      dispatch(CreateTaskAsync({ taskData, token: storedToken }))
+    }
 
+    setTitle("");
+    setDesc("");
+  }
+  const allTasks = useSelector(selectTasks)
+  useEffect(() => {
+    if (token) {
+      dispatch(FetchUserDataAsync(token))
+      dispatch(FetchAllTasksAsync(token))
+    } else if (storedToken) {
+      dispatch(FetchUserDataAsync(storedToken))
+      dispatch(FetchAllTasksAsync(storedToken))
+    }
+  }, [dispatch, token])
+  function calcTodoTasks(): Task[] {
+    let todoTasks: Task[] = []
+    allTasks.map((task) => {
+      if (task.status === "todo") {
+        todoTasks.push(task)
+      }
+    })
+    return todoTasks
+  }
   return (
     <div>
       {status === "loading" ? (
@@ -69,7 +120,7 @@ const Dashboard: React.FC = () => {
             <h3 className="text-lg font-semibold mb-2">Task Statistics</h3>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <p className="text-xl font-bold">{taskStats.totalTasks}</p>
+                <p className="text-xl font-bold">{allTasks.length}</p>
                 <p>Total Tasks</p>
               </div>
               <div>
@@ -85,7 +136,7 @@ const Dashboard: React.FC = () => {
                 <p>Tasks In Progress</p>
               </div>
               <div>
-                <p className="text-xl font-bold">{taskStats.tasksToDo}</p>
+                <p className="text-xl font-bold">{calcTodoTasks().length}</p>
                 <p>Tasks To Do</p>
               </div>
             </div>
@@ -100,7 +151,7 @@ const Dashboard: React.FC = () => {
               <h4 className="text-md font-semibold mb-2">To Do</h4>
 
               <ul>
-                {tasksToDo?.map((task) => (
+                {calcTodoTasks()?.map((task) => (
                   <li key={task.id} className="mb-2">
                     <TaskItem task={task} />
                   </li>
@@ -155,6 +206,7 @@ const Dashboard: React.FC = () => {
                   type="text"
                   className="border p-2 w-full"
                   name="title"
+                  onChange={handleTitleChange}
                   required
                 />
               </label>
@@ -163,12 +215,18 @@ const Dashboard: React.FC = () => {
                 <textarea
                   className="border p-2 w-full"
                   name="description"
+                  onCanPlay={handleDescChange}
                   required
                 ></textarea>
               </label>
               <label className="block mb-2">
                 Task Priority:
-                <select className="border p-2 w-full" name="priority" required>
+                <select
+                  className="border p-2 w-full"
+                  name="priority"
+                  required
+                  onChange={handlePriorityChange}
+                >
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">Low</option>

@@ -31,8 +31,8 @@ const UserProfile: React.FC = () => {
         <div className="mb-2">
           <strong>Tasks Done:</strong>
 
-          {user.tasksDoneList &&
-            user.tasksDoneList.map((task, index) => <TaskItem task={task} />)}
+          {user.completedTasks &&
+            user.completedTasks.map((task, index) => <TaskItem task={task} />)}
         </div>
       </div>
     </div>

@@ -6,11 +6,13 @@ import { Login, Signup } from "./authAPI"
 export interface AuthState {
   token: string
   status: "idle" | "loading" | "failed"
+  error: boolean
 }
 
 const initialState: AuthState = {
   status: "idle",
   token: "",
+  error: false,
 }
 
 export const SignupAsync = createAsyncThunk(
@@ -50,6 +52,7 @@ const authSlice = createSlice({
       })
       .addCase(SignupAsync.rejected, (state) => {
         state.status = "failed"
+        state.error = true
       })
       .addCase(LoginAsync.pending, (state) => {
         state.status = "loading"
@@ -60,6 +63,7 @@ const authSlice = createSlice({
       })
       .addCase(LoginAsync.rejected, (state) => {
         state.status = "failed"
+        state.error = true
       })
   },
 })
@@ -68,5 +72,6 @@ export const { resetAuthState } = authSlice.actions
 
 export const selectAuthStatus = (state: RootState) => state.auth.status
 export const selectAuthToken = (state: RootState) => state.auth.token
+export const selectAuthError = (state: RootState) => state.auth.error
 
 export default authSlice.reducer

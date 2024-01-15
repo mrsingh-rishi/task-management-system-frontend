@@ -9,7 +9,8 @@ interface ProtectedType {
 
 export const Protected: React.FC<ProtectedType> = ({ children }) => {
   const storedToken = localStorage.getItem("authToken")
-  if (!storedToken) {
+  const token = useSelector(selectAuthToken)
+  if (!storedToken && !token) {
     return <Navigate to="/login" replace={true} />
   }
   return children

@@ -2,11 +2,19 @@
 import React from "react"
 
 export interface Task {
-  id: string
+  _id: string
   title: string
   description: string
   status: "todo" | "in progress" | "completed"
   assigned: string
+  priority: "high" | "medium" | "low"
+}
+export interface Task2 {
+  id?: string
+  title: string
+  description: string
+  status: "todo" | "in progress" | "completed"
+  assigned?: string
   priority: "high" | "medium" | "low"
 }
 

@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { LoginAsync, selectAuthToken } from "../authSlice"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit"
 import { RootState, store } from "../../../app/store"
+import { FetchUserDataAsync } from "../../user/userSlice"
 
 type AppDispatch = ThunkDispatch<RootState, void, AnyAction>
 
@@ -24,11 +25,12 @@ const Login = () => {
     dispatch(LoginAsync({ email, password }))
     // console.log("Login Request Sent")
   }
-  const storedToken = localStorage.getItem("authToken")
 
-  if (storedToken) {
-    return <Navigate to="/dashboard" />
-  }
+  useEffect(() => {
+    if (token) {
+      dispatch(FetchUserDataAsync(token))
+    }
+  }, [dispatch, token])
   return (
     <>
       {token !== "" ? (
