@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { LoginAsync, selectAuthToken } from "../authSlice"
 import { useEffect, useState } from "react"
-import { Navigate } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit"
 import { RootState, store } from "../../../app/store"
 import { FetchUserDataAsync } from "../../user/userSlice"
@@ -102,6 +102,14 @@ const Login = () => {
                 >
                   Sign in
                 </button>
+              </div>
+              <div className="flex">
+                <p className="text-sm mx-auto">
+                  Not have an account?{" "}
+                  <Link className="text-blue-800" to="/signup">
+                    Singup
+                  </Link>
+                </p>
               </div>
             </form>
           </div>

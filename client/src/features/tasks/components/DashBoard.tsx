@@ -37,8 +37,8 @@ const Dashboard: React.FC = () => {
 
   const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const p = e.target.value
-    console.log(p);
-    
+    console.log(p)
+
     if (p === "high") {
       setPriority("high")
     } else if (p === " medium") {
@@ -85,8 +85,8 @@ const Dashboard: React.FC = () => {
       dispatch(CreateTaskAsync({ taskData, token: storedToken }))
     }
 
-    setTitle("");
-    setDesc("");
+    setTitle("")
+    setDesc("")
   }
   const allTasks = useSelector(selectTasks)
   useEffect(() => {
@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
 
               <ul>
                 {calcTodoTasks()?.map((task) => (
-                  <li key={task.id} className="mb-2">
+                  <li key={task._id} className="mb-2">
                     <TaskItem task={task} />
                   </li>
                 ))}
@@ -164,7 +164,7 @@ const Dashboard: React.FC = () => {
               <h4 className="text-md font-semibold mb-2">In Progress</h4>
               <ul>
                 {tasksInProgress?.map((task) => (
-                  <li key={task.id} className="mb-2">
+                  <li key={task._id} className="mb-2">
                     <TaskItem task={task} />
                   </li>
                 ))}
@@ -176,7 +176,7 @@ const Dashboard: React.FC = () => {
               <h4 className="text-md font-semibold mb-2">Completed</h4>
               <ul>
                 {tasksCompleted?.map((task) => (
-                  <li key={task.id} className="mb-2">
+                  <li key={task._id} className="mb-2">
                     <TaskItem task={task} />
                   </li>
                 ))}
@@ -189,7 +189,7 @@ const Dashboard: React.FC = () => {
             <h3 className="text-lg font-semibold mb-2">Recent Tasks</h3>
             <ul>
               {recentTasks?.map((task) => (
-                <li key={task.id} className="mb-2">
+                <li key={task._id} className="mb-2">
                   <strong>{task.title}</strong> - {task.status}
                 </li>
               ))}

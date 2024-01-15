@@ -4,7 +4,7 @@ import { SignupAsync, selectAuthToken } from "../authSlice"
 import { ThunkDispatch } from "redux-thunk"
 import { RootState } from "../../../app/store"
 import { AnyAction } from "@reduxjs/toolkit"
-import { Navigate } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 
 type AppDispatch = ThunkDispatch<RootState, void, AnyAction>
 const Signup = () => {
@@ -159,6 +159,14 @@ const Signup = () => {
                 >
                   Sign Up
                 </button>
+              </div>
+              <div className="flex">
+                <p className="text-sm mx-auto">
+                  Already have an account?{" "}
+                  <Link className="text-blue-800" to="/login">
+                    Login
+                  </Link>
+                </p>
               </div>
             </form>
           </div>

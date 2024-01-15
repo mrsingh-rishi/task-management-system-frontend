@@ -5,13 +5,16 @@ export function FetchAllTasks(token: string) {
   return new Promise<{ data: { allTasks: Task[] } }>(
     async (resolve, reject) => {
       try {
-        const response = await fetch("http://localhost:8080/tasks/", {
-          method: "GET",
-          headers: {
-            "content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+        const response = await fetch(
+          "https://task-management-system-backend-production-993d.up.railway.app/tasks/",
+          {
+            method: "GET",
+            headers: {
+              "content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           },
-        })
+        )
         if (!response.ok) {
           reject({
             error: "Failed to fetch user data",
@@ -32,14 +35,17 @@ export function FetchAllTasks(token: string) {
 export function CreateTask(Data: { taskData: Task2; token: string }) {
   return new Promise<{ data: Task }>(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/tasks/", {
-        method: "POST",
-        body: JSON.stringify(Data.taskData),
-        headers: {
-          "content-Type": "application/json",
-          Authorization: `Bearer ${Data.token}`,
+      const response = await fetch(
+        "https://task-management-system-backend-production-993d.up.railway.app/tasks/",
+        {
+          method: "POST",
+          body: JSON.stringify(Data.taskData),
+          headers: {
+            "content-Type": "application/json",
+            Authorization: `Bearer ${Data.token}`,
+          },
         },
-      })
+      )
       if (!response.ok) {
         reject({
           error: "Failed to fetch user data",
@@ -64,7 +70,7 @@ export function UpdateTask(Data: {
   return new Promise<{ data: Task }>(async (resolve, reject) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/tasks/${Data.taskId}`,
+        `https://task-management-system-backend-production-993d.up.railway.app/tasks/${Data.taskId}`,
         {
           method: "PATCH",
           body: JSON.stringify(Data.taskData),

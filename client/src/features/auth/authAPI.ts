@@ -3,7 +3,7 @@ import { UserLogin, UserSignup } from "../../interfaces/User"
 // A mock function to mimic making an async request for data
 export function Signup(userData: UserSignup) {
   return new Promise<{ data: { token: string } }>(async (resolve) => {
-    const response = await fetch("http://localhost:8080/auth/signup", {
+    const response = await fetch("https://task-management-system-backend-production-993d.up.railway.app/auth/signup", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -18,7 +18,7 @@ export function Signup(userData: UserSignup) {
 
 export function Login(userData: UserLogin) {
   return new Promise<{ data: { token: string } }>(async (resolve) => {
-    const response = await fetch("http://localhost:8080/auth/login", {
+    const response = await fetch("https://task-management-system-backend-production-993d.up.railway.app/auth/login", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

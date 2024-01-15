@@ -7,13 +7,16 @@ export function FetchUserData(token: string) {
     data: UserData
   }>(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/users/", {
-        method: "GET",
-        headers: {
-          "content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://task-management-system-backend-production-993d.up.railway.app/users/",
+        {
+          method: "GET",
+          headers: {
+            "content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      })
+      )
 
       if (!response.ok) {
         // Check if the response status is not OK (e.g., 404 Not Found, 500 Internal Server Error)
@@ -45,14 +48,17 @@ export function UpdateUserData(Data: {
       } else {
         reqBody = { completedTasks: Data.userData }
       }
-      const response = await fetch("http://localhost:8080/users/", {
-        method: "PATCH",
-        body: JSON.stringify(reqBody),
-        headers: {
-          "content-Type": "application/json",
-          Authorization: `Bearer ${Data.token}`,
+      const response = await fetch(
+        "https://task-management-system-backend-production-993d.up.railway.app/users/",
+        {
+          method: "PATCH",
+          body: JSON.stringify(reqBody),
+          headers: {
+            "content-Type": "application/json",
+            Authorization: `Bearer ${Data.token}`,
+          },
         },
-      })
+      )
 
       if (!response.ok) {
         // Check if the response status is not OK (e.g., 404 Not Found, 500 Internal Server Error)
